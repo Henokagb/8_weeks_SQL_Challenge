@@ -2,8 +2,8 @@
 Resolution of all the use cases from the web site https://8weeksqlchallenge.com/
 
 ##For local use:
--Clone the repository
 
+-Clone the repository
 ```sh
 git clone https://github.com/Henokagb/8_weeks_SQL_Challenge.git
 cd 8_weeks_SQL_Challenge
