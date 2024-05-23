@@ -13,7 +13,7 @@ cd 8_weeks_SQL_Challenge
 
 -Import the schema and the data from the schema.sql file
 ```example postgresql
-psql -U username -d database -f schema.sql
+psql -U username -d database < schema.sql
 ````
 
 -Write the queries and to answer the questions
