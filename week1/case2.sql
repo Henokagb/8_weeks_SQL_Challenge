@@ -1,6 +1,6 @@
 -- 2. How many days has each customer visited the restaurant?
 SELECT
-    customer_id, COUNT(order_date)
+    customer_id, COUNT(DISTINCT order_date)
  FROM
  	dannys_diner.sales FULL JOIN
     dannys_diner.members
