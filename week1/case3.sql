@@ -1,4 +1,5 @@
 -- 3. What was the first item from the menu purchased by each customer?
+
 WITH ranked as (SELECT
                             customer_id, order_date, product_name ,ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date) as times
                             FROM

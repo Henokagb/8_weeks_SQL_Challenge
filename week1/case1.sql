@@ -1,4 +1,5 @@
 -- 1. What is the total amount each customer spent at the restaurant?
+
 SELECT
     customer_id, SUM(price)
  FROM
