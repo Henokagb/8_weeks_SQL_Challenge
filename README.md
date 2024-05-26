@@ -20,6 +20,6 @@ cd week1
 psql -U username -d database < schema.sql
 ````
 
--Write the queries and to answer the questions
+-Write the queries to answer the questions
 
 -Check the results in the caseN files and improve them if possible.
