@@ -7,6 +7,10 @@ Resolution of all the use cases from the web site https://8weeksqlchallenge.com/
 git clone https://github.com/Henokagb/8_weeks_SQL_Challenge.git
 cd 8_weeks_SQL_Challenge
 ```
+-Enter in a weekN folder
+```sh
+cd week1
+```
 -Check the Entity Relationship Diagram in erd.pdf in the Cases folder
 
 -Check the Questions in the Questions.pdf in the Cases folder
