@@ -11,9 +11,9 @@ cd 8_weeks_SQL_Challenge
 ```sh
 cd week1
 ```
--Check the Entity Relationship Diagram in erd.pdf in the Cases folder
+-Check the Entity Relationship Diagram in erd.pdf in the Taks folder
 
--Check the Questions in the Questions.pdf in the Cases folder
+-Check the Questions in the Questions.pdf in the Tasks folder
 
 -Import the schema and the data from the schema.sql file
 ```example postgresql
