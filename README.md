@@ -21,11 +21,9 @@ cd 8_weeks_SQL_Challenge
 ```sh
 cd week1
 ```
--Check the Entity Relationship Diagram in erd.pdf in the Taks folder
+-Check the Entity Relationship Diagram in erd.pdf and the Questions in the Questions.pdf in the Taks folder or at https://8weeksqlchallenge.com/case-study-1/ (Depending on the case study)
 
--Check the Questions in the Questions.pdf in the Tasks folder
-
--Import the schema and the data from the schema.sql file
+-Import the schema and the data from the schema.sql file (I am using the postgresql syntax but you can use whatever you want: mySQL, SQLite ...)
 ```example postgresql
 psql -U username -d database < schema.sql
 ````
