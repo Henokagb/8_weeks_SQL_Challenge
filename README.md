@@ -21,7 +21,7 @@ cd 8_weeks_SQL_Challenge
 ```sh
 cd week1
 ```
--Go in the tasks folder and click on the link in the CaseStudy.txt
+-Go in the tasks folder and click on the link in the CaseStudy.txt to access the problem statement, Entity Relationship Diagram, case study questions ...
 
 -Import the schema and the data from the schema.sql file (I am using the postgresql syntax but you can use whatever you want: mySQL, SQLite ...)
 ```example postgresql
