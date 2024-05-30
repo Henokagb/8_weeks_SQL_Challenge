@@ -35,4 +35,23 @@ SELECT DISTINCT order_id
 FROM
 	pizza_runner.customer_orders
 
---3 
+--3 How many successful orders were delivered by each runner?
+
+SELECT COUNT(*)
+FROM
+	pizza_runner.runner_orders
+WHERE cancellation IS NULL
+
+--4 How many of each type of pizza was delivered?
+
+SELECT pizza_name, COUNT(pizza_name)
+FROM
+	pizza_runner.customer_orders
+FULL JOIN
+    pizza_runner.runner_orders
+USING (order_id)
+FULL JOIN
+	pizza_runner.pizza_names
+USING (pizza_id)
+WHERE cancellation IS NULL
+GROUP by pizza_name
