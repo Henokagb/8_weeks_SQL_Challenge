@@ -94,3 +94,14 @@ FULL JOIN
 USING (order_id)
 WHERE cancellation IS NULL AND (exclusions IS NOT NULL OR extras IS NOT NULL)
 GROUP BY customer_id
+
+--8 How many pizzas were delivered that had both exclusions and extras?
+
+SELECT COUNT(*) AS "number of pizzas with both exclusions and extras"
+FROM
+	pizza_runner.customer_orders
+FULL JOIN
+    pizza_runner.runner_orders
+USING (order_id)
+WHERE cancellation IS NULL AND (exclusions IS NOT NULL AND extras IS NOT NULL)
+GROUP BY customer_id
