@@ -105,3 +105,20 @@ FULL JOIN
 USING (order_id)
 WHERE cancellation IS NULL AND (exclusions IS NOT NULL AND extras IS NOT NULL)
 GROUP BY customer_id
+
+--9 What was the total volume of pizzas ordered for each hour of the day?
+
+SELECT EXTRACT(HOUR FROM order_time) AS hour, COUNT(*) AS "number of pizzas per hour"
+FROM
+	pizza_runner.customer_orders
+ GROUP BY hour
+ ORDER BY hour
+
+--10 What was the volume of orders for each day of the week?
+
+SELECT EXTRACT(DAY FROM order_time) AS day, COUNT(*) AS "number of pizzas per day"
+FROM
+	pizza_runner.customer_orders
+ GROUP BY day
+ ORDER BY day
+ 
