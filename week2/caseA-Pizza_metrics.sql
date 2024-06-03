@@ -84,3 +84,13 @@ GROUP BY order_id
 ORDER BY count DESC
 LIMIT 1
 
+--7 For each customer, how many delivered pizzas had at least 1 change and how many had no changes?
+
+SELECT customer_id, COUNT(*) AS "number of pizzas changed"
+FROM
+	pizza_runner.customer_orders
+FULL JOIN
+    pizza_runner.runner_orders
+USING (order_id)
+WHERE cancellation IS NULL AND (exclusions IS NOT NULL OR extras IS NOT NULL)
+GROUP BY customer_id
