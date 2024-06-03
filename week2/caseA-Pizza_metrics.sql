@@ -55,3 +55,32 @@ FULL JOIN
 USING (pizza_id)
 WHERE cancellation IS NULL
 GROUP by pizza_name
+
+--5 How many Vegetarian and Meatlovers were ordered by each customer?
+
+SELECT customer_id, pizza_name, COUNT(pizza_name)
+FROM
+	pizza_runner.customer_orders
+FULL JOIN
+    pizza_runner.runner_orders
+USING (order_id)
+FULL JOIN
+	pizza_runner.pizza_names
+USING (pizza_id)
+WHERE cancellation IS NULL
+GROUP BY customer_id, pizza_name
+ORDER BY customer_id
+
+--6 What was the maximum number of pizzas delivered in a single order?
+
+SELECT order_id, COUNT(*)
+FROM
+	pizza_runner.customer_orders
+FULL JOIN
+    pizza_runner.runner_orders
+USING (order_id)
+WHERE cancellation IS NULL
+GROUP BY order_id
+ORDER BY count DESC
+LIMIT 1
+
