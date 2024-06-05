@@ -29,3 +29,14 @@ SELECT  EXTRACT(WEEK FROM registration_date + 3) AS week, COUNT(*)
 FROM pizza_runner.runners
 GROUP BY week
 ORDER BY week
+
+--2 What was the average time in minutes it took for each runner to arrive at the Pizza Runner HQ to pickup the order?
+
+SELECT runner_id, AVG(TO_TIMESTAMP(pickup_time, 'YYYY-MM-DD HH24:MI:SS') - order_time) AS "average pickup_time"
+FROM
+	pizza_runner.customer_orders
+FULL JOIN
+    pizza_runner.runner_orders
+USING (order_id)
+WHERE cancellation IS NULL
+GROUP BY runner_id
