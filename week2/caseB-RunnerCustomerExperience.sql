@@ -23,6 +23,12 @@ UPDATE  pizza_runner.runner_orders
 SET cancellation = NULL
 WHERE cancellation = 'null' OR cancellation = '' OR cancellation = 'NaN';
 
+--Deal with distance values
+UPDATE pizza_runner.runner_orders
+SET distance =  CAST (SUBSTRING(distance FROM 1 FOR LENGTH(distance) - 2) AS NUMERIC)
+WHERE SUBSTRING(distance FROM LENGTH(distance) - 1 FOR LENGTH(distance)) = 'km';
+
+
 --1 How many runners signed up for each 1 week period? (i.e. week starts 2021-01-01)
 
 SELECT  EXTRACT(WEEK FROM registration_date + 3) AS week, COUNT(*)
@@ -40,3 +46,15 @@ FULL JOIN
 USING (order_id)
 WHERE cancellation IS NULL
 GROUP BY runner_id
+
+
+--4 What was the average distance travelled for each customer?
+
+SELECT customer_id, AVG(CAST(distance AS NUMERIC))
+FROM
+pizza_runner.customer_orders
+FULL JOIN
+pizza_runner.runner_orders
+USING (order_id)
+WHERE cancellation IS NULL
+GROUP BY customer_id

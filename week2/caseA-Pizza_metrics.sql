@@ -23,6 +23,12 @@ UPDATE  pizza_runner.runner_orders
 SET cancellation = NULL
 WHERE cancellation = 'null' OR cancellation = '' OR cancellation = 'NaN';
 
+--Deal with distance values
+UPDATE pizza_runner.runner_orders
+SET distance =  CAST (SUBSTRING(distance FROM 1 FOR LENGTH(distance) - 2) AS NUMERIC)
+WHERE SUBSTRING(distance FROM LENGTH(distance) - 1 FOR LENGTH(distance)) = 'km';
+
+
 --1 How many pizzas were ordered?
 
 SELECT COUNT(pizza_id) 
