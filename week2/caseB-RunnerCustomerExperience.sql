@@ -1,4 +1,4 @@
---Deal with null, NaN and empty values
+--Clean pickup time
 UPDATE pizza_runner.customer_orders
 SET exclusions = NULL
 WHERE exclusions = 'null' OR exclusions = '' OR exclusions = 'NaN';
@@ -23,10 +23,19 @@ UPDATE  pizza_runner.runner_orders
 SET cancellation = NULL
 WHERE cancellation = 'null' OR cancellation = '' OR cancellation = 'NaN';
 
---Deal with distance values
+--Clean distance
 UPDATE pizza_runner.runner_orders
-SET distance =  CAST (SUBSTRING(distance FROM 1 FOR LENGTH(distance) - 2) AS NUMERIC)
-WHERE SUBSTRING(distance FROM LENGTH(distance) - 1 FOR LENGTH(distance)) = 'km';
+SET distance =  SUBSTRING(distance FROM 1 FOR LENGTH(distance) - 2)
+WHERE distance LIKE '%km';
+
+--Clean duration
+UPDATE pizza_runner.runner_orders
+SET duration =  SUBSTRING(duration FROM 1 FOR LENGTH(duration) - 7)
+WHERE duration LIKE '%minutes' OR duration LIKE '%minute';
+
+UPDATE pizza_runner.runner_orders
+SET duration =  SUBSTRING(duration FROM 1 FOR LENGTH(duration) - 4)
+WHERE duration LIKE '%mins';
 
 
 --1 How many runners signed up for each 1 week period? (i.e. week starts 2021-01-01)
@@ -58,3 +67,9 @@ pizza_runner.runner_orders
 USING (order_id)
 WHERE cancellation IS NULL
 GROUP BY customer_id
+
+
+--5 What was the difference between the longest and shortest delivery times for all orders?
+
+SELECT MAX(CAST(duration AS NUMERIC)) - MIN(CAST(duration AS NUMERIC)) AS diff
+FROM  pizza_runner.runner_orders
