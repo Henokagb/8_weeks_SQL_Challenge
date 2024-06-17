@@ -70,6 +70,13 @@ GROUP BY customer_id
 
 
 --5 What was the difference between the longest and shortest delivery times for all orders?
-
 SELECT MAX(CAST(duration AS NUMERIC)) - MIN(CAST(duration AS NUMERIC)) AS diff
 FROM  pizza_runner.runner_orders
+
+--6 What was the average speed for each runner for each delivery and do you notice any trend for these values?
+SELECT runner_id, AVG((CAST (distance AS NUMERIC) / CAST (duration AS NUMERIC))) AS Speed
+FROM pizza_runner.runner_orders
+FULL JOIN pizza_runner.customer_orders
+USING(order_id)
+WHERE cancellation IS NULL
+GROUP BY runner_id
