@@ -80,3 +80,23 @@ FULL JOIN pizza_runner.customer_orders
 USING(order_id)
 WHERE cancellation IS NULL
 GROUP BY runner_id
+
+--7 What is the successful delivery percentage for each runner?
+
+SELECT runner_id,  (success.count * 100) / total.count AS success_delivery_percent
+FROM
+        (SELECT runner_id, COUNT(*) 
+         FROM pizza_runner.runner_orders
+        GROUP BY runner_id
+        ) AS total
+
+JOIN
+
+        (SELECT runner_id, COUNT(*)
+         FROM pizza_runner.runner_orders
+         WHERE cancellation IS NULL
+         GROUP BY runner_id
+        ) AS success
+
+USING(runner_id)
+ORDER BY runner_id
