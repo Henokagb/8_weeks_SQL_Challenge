@@ -37,6 +37,10 @@ UPDATE pizza_runner.runner_orders
 SET duration =  SUBSTRING(duration FROM 1 FOR LENGTH(duration) - 4)
 WHERE duration LIKE '%mins';
 
+-- UNNEST toppings
+ALTER TABLE pizza_runner.pizza_recipes
+ALTER COLUMN toppings TYPE int[]
+USING string_to_array(toppings, ',')::int[];
 
 --1 How many runners signed up for each 1 week period? (i.e. week starts 2021-01-01)
 
