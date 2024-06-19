@@ -37,24 +37,24 @@ UPDATE pizza_runner.runner_orders
 SET duration =  SUBSTRING(duration FROM 1 FOR LENGTH(duration) - 4)
 WHERE duration LIKE '%mins';
 
--- UNNEST toppings
-ALTER TABLE pizza_runner.pizza_recipes
-ALTER COLUMN toppings TYPE int[]
-USING string_to_array(toppings, ',')::int[];
-
 
 --1 What are the standard ingredients for each pizza?
 
-WITH pizza_toppings AS
-	(SELECT pizza_id, UNNEST(toppings) AS topping
-	FROM pizza_runner.pizza_recipes)
+WITH pizza_toppings AS 
+	(
+    SELECT pizza_id, UNNEST(string_to_array) AS topping
+	FROM (
+			SELECT pizza_id, string_to_array(toppings, ',')::int[]
+			FROM pizza_runner.pizza_recipes
+  			) AS arrayed
+        )
 
-SELECT topping_name
-FROM pizza_runner.pizza_toppings
-WHERE topping_id IN
-
-(SELECT topping
+SELECT topping, COUNT(pizza_id)
 FROM pizza_toppings
 GROUP BY topping
-HAVING COUNT(pizza_id) = (SELECT COUNT(DISTINCT(pizza_id)) FROM pizza_toppings))
+HAVING COUNT(pizza_id) = (
+  							SELECT COUNT(DISTINCT(pizza_id))
+  							FROM pizza_runner.pizza_recipes
+						 )
+
 
