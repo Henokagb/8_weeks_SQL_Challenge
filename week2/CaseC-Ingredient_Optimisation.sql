@@ -57,4 +57,38 @@ HAVING COUNT(pizza_id) = (
   							FROM pizza_runner.pizza_recipes
 						 )
 
+--2 What was the most commonly added extra?
+WITH extra_added AS
+(
+SELECT UNNEST(string_to_array) AS extra_id
+FROM (
+			SELECT string_to_array(extras, ',')::int[]
+			FROM pizza_runner.customer_orders
+			WHERE extras IS NOT NULL
+  			) AS extra
+  )
+  
+  SELECT pt.topping_name, extra_id, COUNT(extra_id)
+  FROM extra_added, pizza_runner.pizza_toppings AS pt
+  WHERE pt.topping_id = extra_id
+  GROUP BY extra_id, pt.topping_name
+  ORDER BY count DESC
+  LIMIT 1
 
+--3 What was the most common exclusion?
+WITH exclu_added AS
+(
+SELECT UNNEST(string_to_array) AS exclu_id
+FROM (
+			SELECT string_to_array(exclusions, ',')::int[]
+			FROM pizza_runner.customer_orders
+			WHERE exclusions IS NOT NULL
+  			) AS exclu
+  )
+  
+  SELECT pt.topping_name, exclu_id, COUNT(exclu_id)
+  FROM exclu_added, pizza_runner.pizza_toppings AS pt
+  WHERE pt.topping_id = exclu_id
+  GROUP BY exclu_id, pt.topping_name
+  ORDER BY count DESC
+  LIMIT 1
