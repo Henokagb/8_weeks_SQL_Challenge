@@ -135,3 +135,65 @@ pre_items AS (
 SELECT order_id, pizza_name, ' - Exclude' || ' '||  string_agg(exclusion, ', ') AS exclusion, ' - Extra' || ' '|| string_agg(extra, ', ') AS extra
 FROM pre_items 
 GROUP BY order_id, pizza_name
+
+-- 5 Generate an alphabetically ordered comma separated ingredient list for each pizza order from the customer_orders table and add a 2x in front of any relevant ingredients
+--For example: "Meat Lovers: 2xBacon, Beef, ... , Salami"
+
+WITH extra_exclu AS
+(
+  SELECT order_id, pizza_id, string_to_array(toppings, ',')::int[] AS toppings, string_to_array(exclusions, ',')::int[] AS exclusion, string_to_array(extras, ',')::int[] AS extra
+  FROM pizza_runner.customer_orders
+  FULL JOIN
+  pizza_runner.pizza_recipes
+  USING(pizza_id)
+ ),
+ 
+ extra_exclu_edited AS
+ (
+   SELECT order_id, pizza_id,
+   		CASE
+   		WHEN extra IS NOT NULL
+        	THEN array_cat(toppings, extra)
+   		ELSE
+   			toppings
+   		END AS toppings
+   FROM (
+   				SELECT order_id, pizza_id, extra,
+  				CASE
+             	WHEN exclusion IS NOT NULL
+                	THEN (
+                  			SELECT array_agg(tp) FROM UNNEST(toppings) AS tp WHERE tp != ALL (exclusion)
+                			)
+                     ELSE
+                      		toppings
+                END AS toppings
+     			FROM extra_exclu
+     			) AS remove_exclu
+ ),
+ 
+final_needed_data AS
+(
+  SELECT order_id, pizza_name, topping_name, COUNT(topping_name)
+  FROM (
+          SELECT order_id, pizza_id, UNNEST(toppings) AS toppings FROM extra_exclu_edited
+              ) AS unnested
+  FULL JOIN pizza_runner.pizza_names
+  USING(pizza_id)
+  FULL JOIN pizza_runner.pizza_toppings
+  ON toppings = topping_id
+  GROUP BY order_id, pizza_name, topping_name
+  ORDER BY order_id, LOWER(topping_name)
+ )
+  
+  SELECT order_id, pizza_name, string_agg(topping_qty, ', ')
+  FROM (
+   SELECT order_id, pizza_name,
+                    CASE
+                    WHEN count = 1
+                        THEN topping_name
+                    ELSE
+                        count || 'X' || topping_name
+                    END AS topping_qty
+  FROM final_needed_data
+    ) AS qty
+GROUP BY order_id, pizza_name
