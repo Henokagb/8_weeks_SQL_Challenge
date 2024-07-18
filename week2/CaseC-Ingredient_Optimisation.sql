@@ -197,3 +197,23 @@ final_needed_data AS
   FROM final_needed_data
     ) AS qty
 GROUP BY order_id, pizza_name
+
+--6 What is the total quantity of each ingredient used in all delivered pizzas sorted by most frequent first?
+WITH ingredients_exclu_extra AS
+  (
+  SELECT ARRAY_CAT(string_to_array(toppings, ',')::int[], string_to_array(extras, ',')::int[]) AS toppings, string_to_array(exclusions, ',')::int[] AS exclusions
+  FROM pizza_runner.customer_orders
+  FULL JOIN pizza_runner.pizza_recipes
+  USING (pizza_id)
+  )
+
+SELECT topping_name, COUNT(topping)
+FROM (
+  			SELECT UNNEST(toppings) AS topping, exclusions
+			FROM ingredients_exclu_extra
+            ) AS cte1
+JOIN pizza_runner.pizza_toppings
+ON pizza_toppings.topping_id = cte1.topping
+WHERE topping != ALL (exclusions) OR (exclusions IS NULL)
+GROUP BY topping_name
+ORDER BY count DESC
