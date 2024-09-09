@@ -1,5 +1,5 @@
-# 8_weeks_SQL_Challenge
-Resolution of all the use cases from the web site https://8weeksqlchallenge.com/
+# SQL_Challenge
+Resolution of the use cases from the web site https://8weeksqlchallenge.com/
 
 The 8 weeks SQL Challenge is a set of exercices involving writing SQL queries to resolves most of the use cases existing in differents business types:
 - 1- Danny's Diner: https://8weeksqlchallenge.com/case-study-1/
